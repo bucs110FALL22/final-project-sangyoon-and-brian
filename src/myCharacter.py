@@ -10,3 +10,10 @@ class myCharacter(pygame.sprite.Sprite):
     self.down = (x, y - down)
     self.right = (x + right, y)
     self.left = (x - right, y)
+
+  def stats(hp,atk,def,spd,atkspd):
+    self.hp = 50
+    self.atk = 5
+    self.def = 5
+    self.spd = 7
+    self.atkspd = 6
