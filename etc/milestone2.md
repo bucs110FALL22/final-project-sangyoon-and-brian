@@ -9,7 +9,7 @@ Come up with interfaces for 3 possible classes you think you may need for your p
 ## Class Interface 1
 
 class Mycharacter:
-  def __init__(self,x,y,image_mycharacter):
+  def __init__(self,x,y,image_mycharacter,hp):
     self.location = (x,y)
     self.image = image_mycharacter
 
@@ -33,7 +33,7 @@ class Weapon:
 ## Class Interface 3
 
 class Monster:
-  def __init__(self,x,y,image_monster):
+  def __init__(self,x,y,image_monster,hp):
     self.location = (x,y)
     self.image = image_monster
 
