@@ -43,28 +43,28 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_a] == 1:
             self.image = self.leftSprites[int(self.Lcounter)]
             self.Lcounter += 0.2
-            if self.Lcounter >= len(self.leftSprites)-1:
+            if self.Lcounter >= len(self.leftSprites):
                 self.Lcounter = 0
             self.image = self.leftSprites[int(self.Lcounter)]
 
         if keys[pygame.K_d] == 1:
             self.image = self.rightSprites[int(self.Rcounter)]
             self.Rcounter += 0.2
-            if self.Rcounter >= len(self.rightSprites)-1:
+            if self.Rcounter >= len(self.rightSprites):
                 self.Rcounter = 0
             self.image = self.rightSprites[int(self.Rcounter)]
 
         if keys[pygame.K_w] == 1:
             self.image = self.upSprites[int(self.Ucounter)]
             self.Ucounter += 0.2
-            if self.Ucounter >= len(self.upSprites)-1:
+            if self.Ucounter >= len(self.upSprites):
                 self.Ucounter = 0
             self.image = self.upSprites[int(self.Ucounter)]
 
         if keys[pygame.K_s] == 1:
             self.image = self.downSprites[int(self.Dcounter)]
             self.Dcounter += 0.2
-            if self.Dcounter >= len(self.downSprites)-1:
+            if self.Dcounter >= len(self.downSprites):
                 self.Dcounter = 0
             self.image = self.downSprites[int(self.Dcounter)]
 
