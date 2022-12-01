@@ -1,36 +1,23 @@
 import pygame
+from .settings import *
+from .action import *
 
 class Player(pygame.sprite.Sprite):
     def __init__(self,pos,groups,barrier):
         super().__init__(groups)
-
-        self.counter = 0
-
-        self.leftSprites = []
-        self.leftSprites.append(pygame.image.load("../assets/L1.png"))
-        self.leftSprites.append(pygame.image.load("../assets/L2.png"))
-        self.leftSprites.append(pygame.image.load("../assets/L3.png"))
-        self.leftSprites.append(pygame.image.load("../assets/L4.png"))
-
-        self.rightSprites = []
-        self.rightSprites.append(pygame.image.load("../assets/R1.png"))
-        self.rightSprites.append(pygame.image.load("../assets/R2.png"))
-        self.rightSprites.append(pygame.image.load("../assets/R3.png"))
-        self.rightSprites.append(pygame.image.load("../assets/R4.png"))
         
-        self.upSprites = []
-        self.upSprites.append(pygame.image.load("../assets/U1.png"))
-        self.upSprites.append(pygame.image.load("../assets/U2.png"))
-        self.upSprites.append(pygame.image.load("../assets/U3.png"))
-        self.upSprites.append(pygame.image.load("../assets/U4.png"))
+        self.Lcounter = 0
+        self.Rcounter = 0
+        self.Ucounter = 0
+        self.Dcounter = 0
 
-        self.downSprites = []
-        self.downSprites.append(pygame.image.load("../assets/D1.png"))
-        self.downSprites.append(pygame.image.load("../assets/D2.png"))
-        self.downSprites.append(pygame.image.load("../assets/D3.png"))
-        self.downSprites.append(pygame.image.load("../assets/D4.png"))
+        self.leftSprites = [pygame.image.load("assets/L1.png"),pygame.image.load("assets/L2.png"),pygame.image.load("assets/L3.png"),pygame.image.load("assets/L4.png")]
+        self.rightSprites = [pygame.image.load("assets/R1.png"),pygame.image.load("assets/R2.png"),pygame.image.load("assets/R3.png"),pygame.image.load("assets/R4.png")]
+        self.upSprites = [pygame.image.load("assets/U1.png"),pygame.image.load("assets/U2.png"),pygame.image.load("assets/U3.png"),pygame.image.load("assets/U4.png")]
+        self.downSprites = [pygame.image.load("assets/D1.png"),pygame.image.load("assets/D2.png"),pygame.image.load("assets/D3.png"),pygame.image.load("assets/D4.png")]
 
-        self.image = pygame.image.load("../assets/idleD.png")
+        self.image = pygame.image.load("assets/idleD.png")
+        #pygame.image.load("assets/idleD.png")
         
         self.rect = self.image.get_rect(topleft = pos)
 
@@ -40,6 +27,8 @@ class Player(pygame.sprite.Sprite):
        
         self.barrier = barrier
 
+        #self.moveAnim = MoveAnims()
+
     def input(self):
         keys = pygame.key.get_pressed()
         dx = keys[pygame.K_d] - keys[pygame.K_a]
@@ -47,6 +36,37 @@ class Player(pygame.sprite.Sprite):
         self.direction = pygame.math.Vector2(dx, dy)
         if dx != 0 and dy != 0:
            self.direction /= 1.41421
+
+    def currentMode(self):
+        keys = pygame.key.get_pressed()
+
+        if keys[pygame.K_a] == 1:
+            self.image = self.leftSprites[int(self.Lcounter)]
+            self.Lcounter += 0.2
+            if self.Lcounter >= len(self.leftSprites)-1:
+                self.Lcounter = 0
+            self.image = self.leftSprites[int(self.Lcounter)]
+
+        if keys[pygame.K_d] == 1:
+            self.image = self.rightSprites[int(self.Rcounter)]
+            self.Rcounter += 0.2
+            if self.Rcounter >= len(self.rightSprites)-1:
+                self.Rcounter = 0
+            self.image = self.rightSprites[int(self.Rcounter)]
+
+        if keys[pygame.K_w] == 1:
+            self.image = self.upSprites[int(self.Ucounter)]
+            self.Ucounter += 0.2
+            if self.Ucounter >= len(self.upSprites)-1:
+                self.Ucounter = 0
+            self.image = self.upSprites[int(self.Ucounter)]
+
+        if keys[pygame.K_s] == 1:
+            self.image = self.downSprites[int(self.Dcounter)]
+            self.Dcounter += 0.2
+            if self.Dcounter >= len(self.downSprites)-1:
+                self.Dcounter = 0
+            self.image = self.downSprites[int(self.Dcounter)]
 
     def move(self,speed):
         if self.direction.magnitude() != 0:
@@ -84,7 +104,9 @@ class Player(pygame.sprite.Sprite):
 
     def update(self):
         keys = pygame.key.get_pressed()
-
+        self.currentMode()
+        #self.moveAnim.update()
+        '''
         if keys[pygame.K_a]:
             self.animations(self.leftSprites)
 
@@ -96,9 +118,11 @@ class Player(pygame.sprite.Sprite):
 
         elif keys[pygame.K_s]:
             self.animations(self.downSprites)
-
+        '''
         self.input()
         if keys[pygame.K_LSHIFT]:
             self.move(self.sprintspeed)
         else:
             self.move(self.walkspeed)
+
+        #Action.update()

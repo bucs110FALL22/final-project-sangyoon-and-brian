@@ -1,11 +1,9 @@
 import pygame
-import sys
 from .settings import *
-from .space import Space
-from .player import Player
+from .space import *
+from .player import *
 from .camera import *
-from .ground import *
-
+from .green import *
 
 class World:
     def __init__(self):
@@ -23,6 +21,16 @@ class World:
                     Space((x,y),[self.visible,self.barrier])
                 if col == 'p':
                     self.player = Player((x,y),[self.visible],self.barrier)
+                if col == 'g':
+                    Plant((x,y),[self.visible])
+                if col == 't':
+                    Tree((x,y),[self.visible])
+                if col == 'r':
+                    Rock((x,y),[self.visible])
+                if col == 'q':
+                    Tent((x,y),[self.visible,self.barrier])
+                if col == 'l':
+                    Wood((x,y),[self.visible,self.barrier])
 
     def run(self):
         self.visible.cdraw(self.player)
