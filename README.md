@@ -5,12 +5,12 @@
 ### << Semester, Year >>
 ### [Assignment Description](https://docs.google.com/document/d/1H4R6yLL7som1lglyXWZ04RvTp_RvRFCCBn6sqv-82ps/edit?usp=sharing)
 
-<< [repl](#) >>
+[repl](https://replit.com/join/aatcgjmpma-22ulb)
 
 << [link to demo presentation slides](#) >>
 
 ### Team: << team name >>
-#### << Team Members >>
+#### Brian Lu, Sangyoon Kwon
 
 ***
 
@@ -50,7 +50,10 @@ The Project is broken down into the following file structure:
 
 * main.py
 * src
-    * << all of your python files should go here >>
+    * myCharacter.py
+    * Monster.py
+    * Weapon.py
+    * ...
 * assets
     * << all of your media, i.e. images, font files, etc, should go here) >>
 * etc
