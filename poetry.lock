@@ -1,0 +1,24 @@
+[[package]]
+name = "action"
+version = "1.4.4"
+description = "A command-line parser you won't hate"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
+name = "pygame"
+version = "2.1.2"
+description = "Python Game Development"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[metadata]
+lock-version = "1.1"
+python-versions = "^3.8"
+content-hash = "df2f6a340ab847ba5280f1b65f477ed514a4c00c3d0842a51bd07127a852dbca"
+
+[metadata.files]
+action = []
+pygame = []

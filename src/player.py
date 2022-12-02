@@ -1,6 +1,6 @@
 import pygame
 from .settings import *
-from .action import *
+#from .action import *
 
 class Player(pygame.sprite.Sprite):
     def __init__(self,pos,groups,barrier):
