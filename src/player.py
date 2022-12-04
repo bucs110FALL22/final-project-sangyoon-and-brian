@@ -1,128 +1,160 @@
 import pygame
-from .settings import *
-#from .action import *
+from pygame.locals import *
+import cursor
+
+
+vec = pygame.math.Vector2
+HEIGHT = 350
+WIDTH = 700
+ACC = 0.3
+FRIC = -0.10
+COUNT = 0
+FPS = 60
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self,pos,groups,barrier):
-        super().__init__(groups)
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.image.load("Player_R.png")
+        self.rect = self.image.get_rect()
+ 
         
-        self.Lcounter = 0
-        self.Rcounter = 0
-        self.Ucounter = 0
-        self.Dcounter = 0
-
-        self.leftSprites = [pygame.image.load("assets/L1.png"),pygame.image.load("assets/L2.png"),pygame.image.load("assets/L3.png"),pygame.image.load("assets/L4.png")]
-        self.rightSprites = [pygame.image.load("assets/R1.png"),pygame.image.load("assets/R2.png"),pygame.image.load("assets/R3.png"),pygame.image.load("assets/R4.png")]
-        self.upSprites = [pygame.image.load("assets/U1.png"),pygame.image.load("assets/U2.png"),pygame.image.load("assets/U3.png"),pygame.image.load("assets/U4.png")]
-        self.downSprites = [pygame.image.load("assets/D1.png"),pygame.image.load("assets/D2.png"),pygame.image.load("assets/D3.png"),pygame.image.load("assets/D4.png")]
-
-        self.image = pygame.image.load("assets/idleD.png")
-        #pygame.image.load("assets/idleD.png")
+        self.vx = 0
+        self.pos = vec((340, 240))
+        self.vel = vec(0,0)
+        self.acc = vec(0,0)
+        self.direction = "RIGHT"
+ 
         
-        self.rect = self.image.get_rect(topleft = pos)
-
-        self.direction = pygame.math.Vector2()
-        self.walkspeed = 4
-        self.sprintspeed = 6
-       
-        self.barrier = barrier
-
-        #self.moveAnim = MoveAnims()
-
-    def input(self):
-        keys = pygame.key.get_pressed()
-        dx = keys[pygame.K_d] - keys[pygame.K_a]
-        dy = keys[pygame.K_s] - keys[pygame.K_w]
-        self.direction = pygame.math.Vector2(dx, dy)
-        if dx != 0 and dy != 0:
-           self.direction /= 1.41421
-
-    def currentMode(self):
-        keys = pygame.key.get_pressed()
-
-        if keys[pygame.K_a] == 1:
-            self.image = self.leftSprites[int(self.Lcounter)]
-            self.Lcounter += 0.2
-            if self.Lcounter >= len(self.leftSprites):
-                self.Lcounter = 0
-            self.image = self.leftSprites[int(self.Lcounter)]
-
-        if keys[pygame.K_d] == 1:
-            self.image = self.rightSprites[int(self.Rcounter)]
-            self.Rcounter += 0.2
-            if self.Rcounter >= len(self.rightSprites):
-                self.Rcounter = 0
-            self.image = self.rightSprites[int(self.Rcounter)]
-
-        if keys[pygame.K_w] == 1:
-            self.image = self.upSprites[int(self.Ucounter)]
-            self.Ucounter += 0.2
-            if self.Ucounter >= len(self.upSprites):
-                self.Ucounter = 0
-            self.image = self.upSprites[int(self.Ucounter)]
-
-        if keys[pygame.K_s] == 1:
-            self.image = self.downSprites[int(self.Dcounter)]
-            self.Dcounter += 0.2
-            if self.Dcounter >= len(self.downSprites):
-                self.Dcounter = 0
-            self.image = self.downSprites[int(self.Dcounter)]
-
-    def move(self,speed):
-        if self.direction.magnitude() != 0:
-            self.direction = self.direction.normalize()
+        self.jumping = False
+        self.running = False
+        self.move_frame = 0
+ 
         
-        self.rect.x += self.direction.x * speed
-        self.collision('horizontal')
-        self.rect.y += self.direction.y * speed
-        self.collision('vertical')
-            
-        #self.rect.center += self.direction * speed
-
-    def collision(self,direction):
-        if direction == 'horizontal':
-            for sprite in self.barrier:
-                if sprite.rect.colliderect(self.rect):
-                    if self.direction.x > 0:
-                        self.rect.right = sprite.rect.left
-                    if self.direction.x < 0:
-                        self.rect.left = sprite.rect.right
-
-        if direction == 'vertical':
-            for sprite in self.barrier:
-                if sprite.rect.colliderect(self.rect):
-                    if self.direction.y > 0:
-                        self.rect.bottom = sprite.rect.top
-                    if self.direction.y < 0:
-                        self.rect.top = sprite.rect.bottom
-
-    def animations(self,sprites):
-            self.counter += 1
-            if self.counter >= len(sprites):
-                self.counter = 0
-                self.image = sprites[self.counter]
-
+        self.attacking = False
+        self.cooldown = False
+        self.immune = False
+        self.special = False
+        self.attack_frame = 0
+        self.health = 5
+        self.magic_cooldown = 1
+        self.mana = 0
+ 
+ 
+    def move(self):
+          if cursor.wait == 1: return
+           
+          
+          self.acc = vec(0,0.5)
+ 
+          
+          if abs(self.vel.x) > 0.3:
+                self.running = True
+          else:
+                self.running = False
+ 
+          
+          pressed_keys = pygame.key.get_pressed()
+ 
+          
+          if pressed_keys[K_LEFT]:
+                self.acc.x = -ACC
+          if pressed_keys[K_RIGHT]:
+                self.acc.x = ACC 
+ 
+         
+          self.acc.x += self.vel.x * FRIC
+          self.vel += self.acc
+          self.pos += self.vel + 0.5 * self.acc  
+ 
+          
+          if self.pos.x > WIDTH:
+                self.pos.x = 0
+          if self.pos.x < 0:
+                self.pos.x = WIDTH
+         
+          self.rect.midbottom = self.pos            
+ 
+    def gravity_check(self):
+          hits = pygame.sprite.spritecollide(player ,ground_group, False)
+          if self.vel.y > 0:
+              if hits:
+                  lowest = hits[0]
+                  if self.pos.y < lowest.rect.bottom:
+                      self.pos.y = lowest.rect.top + 1
+                      self.vel.y = 0
+                      self.jumping = False
+ 
+ 
     def update(self):
-        keys = pygame.key.get_pressed()
-        self.currentMode()
-        #self.moveAnim.update()
-        '''
-        if keys[pygame.K_a]:
-            self.animations(self.leftSprites)
-
-        elif keys[pygame.K_d]:
-            self.animations(self.rightSprites)
-
-        elif keys[pygame.K_w]:
-            self.animations(self.upSprites)
-
-        elif keys[pygame.K_s]:
-            self.animations(self.downSprites)
-        '''
-        self.input()
-        if keys[pygame.K_LSHIFT]:
-            self.move(self.sprintspeed)
-        else:
-            self.move(self.walkspeed)
-
-        #Action.update()
+          if cursor.wait == 1: return
+           
+          if self.move_frame > 6:
+                self.move_frame = 0
+                return
+ 
+          
+          if self.jumping == False and self.running == True:  
+                if self.vel.x > 0:
+                      self.image = run_ani_R[self.move_frame]
+                      self.direction = "RIGHT"
+                else:
+                      self.image = run_ani_L[self.move_frame]
+                      self.direction = "LEFT"
+                self.move_frame += 1
+ 
+          
+          if abs(self.vel.x) < 0.2 and self.move_frame != 0:
+                self.move_frame = 0
+                if self.direction == "RIGHT":
+                      self.image = run_ani_R[self.move_frame]
+                elif self.direction == "LEFT":
+                      self.image = run_ani_L[self.move_frame]
+ 
+    def attack(self):        
+               
+          if self.attack_frame > 10:
+                self.attack_frame = 0
+                self.attacking = False
+ 
+          
+          if self.direction == "RIGHT":
+                 self.image = attack_ani_R[self.attack_frame]
+          elif self.direction == "LEFT":
+                 self.correction()
+                 self.image = attack_ani_L[self.attack_frame] 
+ 
+          
+          self.attack_frame += 1
+           
+ 
+    def jump(self):
+        self.rect.x += 1
+ 
+        
+        hits = pygame.sprite.spritecollide(self, ground_group, False)
+         
+        self.rect.x -= 1
+ 
+        
+        if hits and not self.jumping:
+           self.jumping = True
+           self.vel.y = -12
+ 
+    def correction(self):
+         
+          if self.attack_frame == 1:
+                self.pos.x -= 20
+          if self.attack_frame == 10:
+                self.pos.x += 20
+                 
+    def player_hit(self):
+        if self.cooldown == False:      
+            self.cooldown = True 
+            pygame.time.set_timer(hit_cooldown, 1000) 
+ 
+            self.health = self.health - 1
+            health.image = health_ani[self.health]
+             
+            if self.health <= 0:
+                self.kill()
+                pygame.display.update()

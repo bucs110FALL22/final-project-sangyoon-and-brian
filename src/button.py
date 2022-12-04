@@ -1,22 +1,27 @@
 import pygame
+from pygame.locals import *
+import sys
+import cursor
 
-class Button():
-    def __init__(self,x,y,image,scale):
-        width = image.get_width()
-        height = image.get_height()
-        self.image = pygame.transform.scale(image,(int(width*scale),int(height*scale)))
-        self.rect = self.image.get_rect()
-        self.rect.topleft = (x,y)
-        self.clicked = False
-    
-    def draw(self, surface):
-        action = False
-        pos = pygame.mouse.get_pos()
-        if self.rect.collidepoint(pos):
-            if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
-                self.clicked = True
-                action = True
-        if pygame.mouse.get_pressed()[0] == 0:
-            self.clicked = False
-        surface.blit(self.image, (self.rect.x, self.rect.y))
-        return action
+
+
+HEIGHT = 350
+WIDTH = 700
+displaysurface = pygame.display.set_mode((WIDTH, HEIGHT))
+vec = pygame.math.Vector2
+class Button(pygame.sprite.Sprite):
+      def __init__(self):
+            super().__init__()
+            self.vec = vec(620, 300)
+            self.imgdisp = 0
+ 
+      def render(self, num):
+            if (num == 0):
+                  self.image = pygame.image.load("home_small.png")
+            elif (num == 1):
+                  if cursor.wait == 0:
+                        self.image = pygame.image.load("pause_small.png")
+                  else:
+                        self.image = pygame.image.load("play_small.png")
+                                     
+            displaysurface.blit(self.image, self.vec)
