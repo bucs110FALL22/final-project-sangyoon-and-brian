@@ -26,7 +26,7 @@ class EventHandler():
             self.battle = False
             self.enemy_generation = pygame.USEREVENT + 2
             self.stage = 1
-            self.money = 0
+            
  
             self.stage_enemies = []
             for x in range(1, 21):

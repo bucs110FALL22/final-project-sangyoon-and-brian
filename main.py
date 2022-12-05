@@ -63,8 +63,8 @@ health_ani = [pygame.image.load("assets/heart0.png"), pygame.image.load("assets/
 vec = pygame.math.Vector2
 HEIGHT = 350
 WIDTH = 700
-ACC = 0.3
-FRIC = -0.10
+ACC = 0.15
+FRIC = -0.30
 COUNT = 0
 FPS = 60
 
@@ -206,18 +206,17 @@ while True:
         
                   if player.mana < 100: 
                     player.mana += random.randint(1, 3)
-      elif hits == True:
+      elif hits and player.attacking == False:
 
-                     
+                if player.cooldown == False:      
                   player.cooldown = True 
-                  pygame.time.set_timer(hit_cooldown, 2000) 
+                  pygame.time.set_timer(hit_cooldown, 3000) 
  
                   player.health = player.health - 1
                   health.image = health_ani[player.health]
              
                   if player.health <= 0:
                     player.kill()
-                    pygame.display.update()
         
       pygame.display.update()
 

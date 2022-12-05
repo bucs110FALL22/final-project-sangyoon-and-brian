@@ -16,7 +16,7 @@ color_white = (255,255,255)
 class StageDisplay(pygame.sprite.Sprite):
       def __init__(self):
             super().__init__()
-            self.text = headingfont.render("STAGE: " + '1',  True, color_dark)
+            self.text = headingfont.render("STAGE: " + '',  True, color_dark)
             self.rect = self.text.get_rect()
             self.posx = -100
             self.posy = 100
@@ -25,7 +25,7 @@ class StageDisplay(pygame.sprite.Sprite):
  
       def move_display(self):
            
-            self.text = headingfont.render("STAGE: " + '1', True, color_dark)
+            self.text = headingfont.render("STAGE: " + '', True, color_dark)
             if self.posx < 720:
                   self.posx += 6
                   displaysurface.blit(self.text, (self.posx, self.posy))
