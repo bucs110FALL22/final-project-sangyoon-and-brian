@@ -7,6 +7,14 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "numpy"
+version = "1.23.5"
+description = "NumPy is the fundamental package for array computing with Python."
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[[package]]
 name = "pygame"
 version = "2.1.2"
 description = "Python Game Development"
@@ -17,8 +25,9 @@ python-versions = ">=3.6"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "df2f6a340ab847ba5280f1b65f477ed514a4c00c3d0842a51bd07127a852dbca"
+content-hash = "f919478984a236fcb941fa22050df1fc56620eb9c267e073a2c5adf64aa3def9"
 
 [metadata.files]
 action = []
+numpy = []
 pygame = []

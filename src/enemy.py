@@ -1,18 +1,28 @@
 import pygame
 import random
-import cursor
-import player
-import magicskill
+import src.cursor
+from src import *
+import src.magicskill
+import src.player
+import src.item
+import numpy
+import src.eventhandler
 
-
+handler = src.eventhandler.EventHandler()
+player = src.player.Player()
+cursor = src.cursor.Cursor()
 WIDTH = 700
-
+HEIGHT = 350
+Items = pygame.sprite.Group()
 vec = pygame.math.Vector2
-
+Playergroup = pygame.sprite.Group()
+Playergroup.add(player)
+MagicSkills = pygame.sprite.Group()
+displaysurface = pygame.display.set_mode((WIDTH, HEIGHT))
 class Enemy(pygame.sprite.Sprite):
       def __init__(self):
         super().__init__()
-        self.image = pygame.image.load("Enemy.png")
+        self.image = pygame.image.load("assets/Enemy.png")
         self.rect = self.image.get_rect()     
         self.pos = vec(0,0)
         self.vel = vec(0,0)
@@ -70,7 +80,7 @@ class Enemy(pygame.sprite.Sprite):
  
                   if item_no != 0:
                         
-                        item = Item(item_no)
+                        item = src.item.Item(item_no)
                         Items.add(item)
                        
                         item.posx = self.pos.x

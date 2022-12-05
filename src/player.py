@@ -1,7 +1,11 @@
 import pygame
 from pygame.locals import *
-import cursor
+import src.cursor
+from assets import *
+import src.ground
+import src.healthbar
 
+health = src.healthbar.HealthBar()
 
 vec = pygame.math.Vector2
 HEIGHT = 350
@@ -10,11 +14,44 @@ ACC = 0.3
 FRIC = -0.10
 COUNT = 0
 FPS = 60
+ground = src.ground.Ground()
+ground_group = pygame.sprite.Group()
+ground_group.add(ground)
+run_ani_R = [pygame.image.load("assets/Player_R.png"), pygame.image.load("assets/Player_Run1_R.png"),
+             pygame.image.load("assets/Player_Run2_R.png"),pygame.image.load("assets/Player_Run3_R.png"),
+             pygame.image.load("assets/Player_Run4_R.png"),pygame.image.load("assets/Player_Run5_R.png"),
+             pygame.image.load("assets/Player_R.png")]
+ 
 
+run_ani_L = [pygame.image.load("assets/Player_L.png"), pygame.image.load("assets/Player_Run1_L.png"),
+             pygame.image.load("assets/Player_Run2_L.png"),pygame.image.load("assets/Player_Run3_L.png"),
+             pygame.image.load("assets/Player_Run4_L.png"),pygame.image.load("assets/Player_Run5_L.png"),
+             pygame.image.load("assets/Player_L.png")]
+ 
+
+attack_ani_R = [pygame.image.load("assets/Player_R.png"), pygame.image.load("assets/Attack_R1.png"),
+                pygame.image.load("assets/Attack_R2.png"),pygame.image.load("assets/Attack_R2.png"),
+                pygame.image.load("assets/Attack_R3.png"),pygame.image.load("assets/Attack_R3.png"),
+                pygame.image.load("assets/Attack_R4.png"),pygame.image.load("assets/Attack_R4.png"),
+                pygame.image.load("assets/Attack_R5.png"),pygame.image.load("assets/Attack_R5.png"),
+                pygame.image.load("assets/Player_R.png")]
+ 
+
+attack_ani_L = [pygame.image.load("assets/Player_L.png"), pygame.image.load("assets/Attack_L1.png"),
+                pygame.image.load("assets/Attack_L2.png"),pygame.image.load("assets/Attack_L2.png"),
+                pygame.image.load("assets/Attack_L3.png"),pygame.image.load("assets/Attack_L3.png"),
+                pygame.image.load("assets/Attack_L4.png"),pygame.image.load("assets/Attack_L4.png"),
+                pygame.image.load("assets/Attack_L5.png"),pygame.image.load("assets/Attack_L5.png"),
+                pygame.image.load("assets/Player_L.png")]
+health_ani = [pygame.image.load("assets/heart0.png"), pygame.image.load("assets/heart.png"),
+              pygame.image.load("assets/heart2.png"), pygame.image.load("assets/heart3.png"),
+              pygame.image.load("assets/heart4.png"), pygame.image.load("assets/heart5.png")] 
+
+hit_cooldown = pygame.USEREVENT + 1
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load("Player_R.png")
+        self.image = pygame.image.load("assets/Player_R.png")
         self.rect = self.image.get_rect()
  
         
@@ -41,7 +78,7 @@ class Player(pygame.sprite.Sprite):
  
  
     def move(self):
-          if cursor.wait == 1: return
+          if src.cursor.Cursor().wait == 1: return
            
           
           self.acc = vec(0,0.5)
@@ -75,7 +112,7 @@ class Player(pygame.sprite.Sprite):
           self.rect.midbottom = self.pos            
  
     def gravity_check(self):
-          hits = pygame.sprite.spritecollide(player ,ground_group, False)
+          hits = pygame.sprite.spritecollide(self,ground_group, False)
           if self.vel.y > 0:
               if hits:
                   lowest = hits[0]
@@ -86,7 +123,7 @@ class Player(pygame.sprite.Sprite):
  
  
     def update(self):
-          if cursor.wait == 1: return
+          if src.cursor.Cursor().wait == 1: return
            
           if self.move_frame > 6:
                 self.move_frame = 0

@@ -9,7 +9,7 @@ class Dungeon(pygame.sprite.Sprite):
       def __init__(self):
             super().__init__()
             self.hide = False
-            self.image = pygame.image.load("Dungeon.png")
+            self.image = pygame.image.load("assets/Dungeon.png")
  
       def update(self):
             if self.hide == False:

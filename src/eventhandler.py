@@ -1,11 +1,24 @@
 import pygame
-import button
+from pygame.locals import *
+import src.button
 from tkinter import filedialog
 from tkinter import *
+import src.background
+import src.enemy
+import src.item
+import src.dungeon
+import src.ground
+import src.button
+import src.stagedisplay
+import sys
 
-
-
-
+stage_display = src.stagedisplay.StageDisplay()
+button = src.button.Button()
+ground = src.ground.Ground()
+background = src.background.Background()
+Enemies = pygame.sprite.Group()
+Items = pygame.sprite.Group()
+dungeon = src.dungeon.Dungeon()
 class EventHandler():
       def __init__(self):
             self.enemy_count = 0
@@ -71,5 +84,5 @@ class EventHandler():
              
             
             dungeon.hide = False
-            background.bgimage = pygame.image.load("Background.png")
-            ground.image = pygame.image.load("Ground.png")
+            background.bgimage = pygame.image.load("assets/Background.png")
+            ground.image = pygame.image.load("assets/Ground.png")

@@ -1,8 +1,9 @@
 import pygame
 from pygame.locals import *
 import sys
-import cursor
+import src.cursor
 
+cursor = src.cursor.Cursor()
 
 
 HEIGHT = 350
@@ -17,11 +18,11 @@ class Button(pygame.sprite.Sprite):
  
       def render(self, num):
             if (num == 0):
-                  self.image = pygame.image.load("home_small.png")
+                  self.image = pygame.image.load("assets/home_small.png")
             elif (num == 1):
                   if cursor.wait == 0:
-                        self.image = pygame.image.load("pause_small.png")
+                        self.image = pygame.image.load("assets/pause_small.png")
                   else:
-                        self.image = pygame.image.load("play_small.png")
+                        self.image = pygame.image.load("assets/play_small.png")
                                      
             displaysurface.blit(self.image, self.vec)

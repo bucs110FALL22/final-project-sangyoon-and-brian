@@ -1,11 +1,15 @@
 import pygame
 from pygame.locals import *
-
-
+from tkinter import filedialog
+from tkinter import *
+import src.eventhandler
+import src.player
+handler = src.eventhandler.EventHandler()
+pygame.init()
 HEIGHT = 350
 WIDTH = 700
 displaysurface = pygame.display.set_mode((WIDTH, HEIGHT))
-
+player = src.player.Player()
 
 color_light = (170,170,170)
 color_dark = (100,100,100)

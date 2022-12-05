@@ -1,18 +1,26 @@
 import pygame
 from pygame.locals import *
 import sys
+import src.healthbar
+import src.player
+import src.healthbar
 
-import player
-import healthbar
-
+health = src.healthbar.HealthBar()
 
 HEIGHT = 350
 WIDTH = 700
+player = src.player.Player()
+
+Playergroup = pygame.sprite.Group()
+Playergroup.add(player)
+health_ani = [pygame.image.load("assets/heart0.png"), pygame.image.load("assets/heart.png"),
+              pygame.image.load("assets/heart2.png"), pygame.image.load("assets/heart3.png"),
+              pygame.image.load("assets/heart4.png"), pygame.image.load("assets/heart5.png")]
 displaysurface = pygame.display.set_mode((WIDTH, HEIGHT))
 class Item(pygame.sprite.Sprite):
       def __init__(self, itemtype):
             super().__init__()
-            if itemtype == 1: self.image = pygame.image.load("heart.png")
+            if itemtype == 1: self.image = pygame.image.load("assets/heart.png")
             self.rect = self.image.get_rect()
             self.type = itemtype
             self.posx = 0
