@@ -1,4 +1,5 @@
 import pygame
+from pygame.locals import *
 import random
 import src.cursor
 from src import *
@@ -7,7 +8,9 @@ import src.player
 import src.item
 import numpy
 import src.eventhandler
+import sys
 
+pygame.init()
 handler = src.eventhandler.EventHandler()
 player = src.player.Player()
 cursor = src.cursor.Cursor()

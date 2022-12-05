@@ -14,7 +14,11 @@ import src.magicskill
 import src.stagedisplay
 import src.statusbar
 import sys
-
+from tkinter import filedialog
+from tkinter import *
+import numpy
+import random
+pygame.init()
 run_ani_R = [pygame.image.load("assets/Player_R.png"), pygame.image.load("assets/Player_Run1_R.png"),
              pygame.image.load("assets/Player_Run2_R.png"),pygame.image.load("assets/Player_Run3_R.png"),
              pygame.image.load("assets/Player_Run4_R.png"),pygame.image.load("assets/Player_Run5_R.png"),
@@ -45,16 +49,16 @@ health_ani = [pygame.image.load("assets/heart0.png"), pygame.image.load("assets/
               pygame.image.load("assets/heart2.png"), pygame.image.load("assets/heart3.png"),
               pygame.image.load("assets/heart4.png"), pygame.image.load("assets/heart5.png")] 
 
-def main():
-    pygame.init()
+#def main():
+    #pygame.init()
     #Create an instance on your controller object
     
     
     ###### NOTHING ELSE SHOULD GO IN main(), JUST THE ABOVE 3 LINES OF CODE ######
 
 # https://codefather.tech/blog/if-name-main-python/
-if __name__ == '__main__':
-    main()
+#if __name__ == '__main__':
+    #main()
 
 vec = pygame.math.Vector2
 HEIGHT = 350
@@ -65,8 +69,9 @@ COUNT = 0
 FPS = 60
 
 displaysurface = pygame.display.set_mode((WIDTH, HEIGHT))
+enemy = src.enemy.Enemy()
 Enemies = pygame.sprite.Group()
- 
+
 player = src.player.Player()
 Playergroup = pygame.sprite.Group()
 Playergroup.add(player)
@@ -94,7 +99,8 @@ hit_cooldown = pygame.USEREVENT + 1
 while True:
       player.gravity_check()
       mouse = pygame.mouse.get_pos()
- 
+  
+      
       for event in pygame.event.get():
           if event.type == hit_cooldown:
               player.cooldown = False
@@ -144,7 +150,13 @@ while True:
       if player.attacking == True:
             player.attack() 
       player.move()                
+
+  
+    
  
+          
+      
+      
              
       background.render()
       ground.render()
@@ -177,12 +189,36 @@ while True:
       for ball in MagicSkills:
             ball.lightning()
      
-      for entity in Enemies:
-            entity.update()
-            entity.move()
-            entity.render()
-       
+      for enemy in Enemies:
+            enemy.update()
+            enemy.move()
+            enemy.render()
+
+      hits = pygame.sprite.spritecollide(enemy, Playergroup, False)
  
+            
+      f_hits = pygame.sprite.spritecollide(enemy, MagicSkills, False)
+ 
+            
+      if hits and player.attacking == True or f_hits:
+                  enemy.kill()
+                  handler.dead_enemy_count += 1
+        
+                  if player.mana < 100: 
+                    player.mana += random.randint(1, 3)
+      elif hits == True:
+
+                     
+                  player.cooldown = True 
+                  pygame.time.set_timer(hit_cooldown, 2000) 
+ 
+                  player.health = player.health - 1
+                  health.image = health_ani[player.health]
+             
+                  if player.health <= 0:
+                    player.kill()
+                    pygame.display.update()
+        
       pygame.display.update()
 
 
